@@ -34,8 +34,21 @@ button {
     background-color: #58641D;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 20px;
+    font-weight: bolder;
 }
 
 h1 {
     margin-right: 50px;
+}
+
+p {
+    text-align: right;
+    margin-right: 20px;
+}
+
+#displayMain {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 40px;
+    font-weight: bolder;
+    margin-top: 0;
 }
