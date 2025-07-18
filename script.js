@@ -30,8 +30,11 @@ function operate(operator, num1, num2){
 }
 const displayContent = document.querySelector("#displayContent");
 const displayMain = document.querySelector("#displayMain");
-displayContent.textContent = "6 + 9 = 68";
-displayMain.textContent = "69";
+displayContent.textContent = "";
+displayMain.textContent = "0";
+let max = 12;
+let operatorSign = ["+", "-", "/", "*"];
+let maxNum1;
 
 const buttons = document.querySelector("#buttons");
 const childButtons = buttons.children;
@@ -39,33 +42,50 @@ const childButtons = buttons.children;
     btn.addEventListener('click', (e)=> {
         console.log(e.target.textContent);
         let btnChoice = e.target.textContent;
+
+
+//Separate contents
         let content = displayMain.textContent;
+        if(content.length === max && !content.includes("/") && !content.includes("+") && !content.includes("-") && !content.includes("*")){
+            maxNum1 = content;
+        }
         let operators = /[^+\-*/]/g;
         let operator = content.replace(operators, "");
         let result = content.match(/[0-9.]+/g);
-        let num1 = "";
-        let num2 = "";
-        console.log(result);
-        if(result !== null){
-        num1 = result[0];
-        num2 = result[1];
-         }
-        console.log(num1, num2, operator[0],operator[1]);
-        console.log(num2 > num1);
         
-        // const isButton = e.target.nodeName === 'BUTTON';
+        let num1;
+        let num2;
+        console.log(result);
+        if (maxNum1 !== undefined && result !== null){
+            num1 = maxNum1;
+            num2 = result[0];
+         }  else if(maxNum1 === undefined && result !== null){
+            num1 = result[0];
+            num2 = result[1];
+         }
+         console.log(num1, num2);
+         
+           //const isButton = e.target.nodeName === 'BUTTON';
             switch(btnChoice){
+                case "CALC": 
+                        break;
                 case "CLR": 
-                        displayMain.textContent = "";  
+                        displayMain.textContent = "0";  
                         displayContent.textContent = "";                   
                         break;
                 case "DEL":
-                        displayMain.textContent = (content = content.substring(0, content.length-1));
-                        console.log(content);
+                        if(content <= 0){
+                            displayMain.textContent = 0;
+                        } else {
+                            displayMain.textContent = (content = content.substring(0, content.length-1));
+                        }
                         break;
                 case "/":
-                        if(!content.includes("/"))
-                        displayMain.textContent += "/";
+                        if(content.length >= 12){
+                            displayMain.textContent = "/";
+                        } else {
+                            displayMain.textContent += "/";
+                        }
                         break;
                 case "*":
                         if(!content.includes("*"))
@@ -93,9 +113,12 @@ const childButtons = buttons.children;
                             displayMain.textContent = operate(operator, num1, num2);
                             displayContent.textContent = `${num1} ${operator[0]} ${num2} = `+ operate(operator, num1, num2);
                         }
+                        maxNum1 = undefined;
                         break;
                 default:
-                        displayMain.textContent += e.target.textContent;
+                        if(content.length < 12) {
+                            displayMain.textContent += e.target.textContent;
+                        }
                         break;
             }
     });
