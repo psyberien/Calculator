@@ -1,18 +1,54 @@
 
 function add(a, b){
-    return a + b;
+    let result = a + b;
+    let stringRes = result.toString();
+    if(stringRes.includes(".")){
+        result = result.toFixed(2);
+        stringRes = result.toString();
+    } else if (stringRes.length >= 12) {
+        stringRes = stringRes.substring(0, 12);
+    }
+    return stringRes;
 }
 
 function subtract(a, b){
-    return a - b;
+    let result = a - b;
+    let stringRes = result.toString();
+    if(stringRes.includes(".")){
+        result = result.toFixed(2);
+        stringRes = result.toString();
+    } else if (stringRes.length >= 12) {
+        stringRes = stringRes.substring(0, 12);
+    }
+    return stringRes;
 }
 
 function multiply(a, b){
-    return a * b;
+    let result = a * b;
+    let stringRes = result.toString();
+    if(stringRes.includes(".")){
+        result = result.toFixed(2);
+        stringRes = result.toString();
+    } else if (stringRes.length >= 12) {
+        stringRes = stringRes.substring(0, 12);
+    }
+    return stringRes;
 }
 
 function divide(a ,b){
-    return a / b;
+    if(b === 0){
+         alert("Snarky N00000000");
+        return a;
+    };
+    let result = a / b;
+    let stringRes = result.toString();
+    if(stringRes.includes(".")){
+        result = result.toFixed(2);
+        stringRes = result.toString();
+    } else if (stringRes.length >= 12) {
+        stringRes = stringRes.substring(0, 12);
+    }
+    return stringRes;
 }
 
 function operate(operator, num1, num2){
@@ -32,9 +68,8 @@ const displayContent = document.querySelector("#displayContent");
 const displayMain = document.querySelector("#displayMain");
 displayContent.textContent = "";
 displayMain.textContent = "0";
-let max = 12;
-let operatorSign = ["+", "-", "/", "*"];
 let maxNum1;
+let isDisplay = false;
 
 const buttons = document.querySelector("#buttons");
 const childButtons = buttons.children;
@@ -46,7 +81,8 @@ const childButtons = buttons.children;
 
 //Separate contents
         let content = displayMain.textContent;
-        if(content.length === max && !content.includes("/") && !content.includes("+") && !content.includes("-") && !content.includes("*")){
+        let nega = content.slice(1);
+        if(content.length >= 10 && !content.includes("/") && !content.includes("+") && !content.includes("-") && !content.includes("*")){
             maxNum1 = content;
         }
         let operators = /[^+\-*/]/g;
@@ -64,12 +100,15 @@ const childButtons = buttons.children;
             num2 = result[1];
          }
          console.log(num1, num2);
+         let lastChar = content.at(-1);
          
            //const isButton = e.target.nodeName === 'BUTTON';
             switch(btnChoice){
                 case "CALC": 
                         break;
                 case "CLR": 
+                        maxNum1 = undefined;
+                        isDisplay = false;
                         displayMain.textContent = "0";  
                         displayContent.textContent = "";                   
                         break;
@@ -81,24 +120,120 @@ const childButtons = buttons.children;
                         }
                         break;
                 case "/":
-                        if(content.length >= 12){
-                            displayMain.textContent = "/";
+                        isDisplay = false;
+                        if(nega.includes("*") && !isNaN(lastChar) || nega.includes("/") && !isNaN(lastChar) || nega.includes("-") && !isNaN(lastChar) || nega.includes("+") && !isNaN(lastChar)){
+                            console.log(num1, num2, operator);
+                            if(operator[0] === "-" && operator[1] === "-"){
+                            displayMain.textContent = "-"+operate("+", num1, num2)+"/";
+                            displayContent.textContent = `-${num1} - ${num2} = ` +operate("+", num1, num2);
+                            } else if(operator[0] === "-" && operator[1] === "+"){
+                            displayMain.textContent = operate(operator, num2, num1)+"/";
+                            displayContent.textContent = `-${num1} + ${num2} = ` +operate(operator, num2, num1);   
+                            } else if(operator[1] !== undefined && operator[1] !== '+'){
+                            operator = operator[1];
+                            displayMain.textContent = "-"+operate(operator, num1, num2)+"/";
+                            displayContent.textContent = `-${num1} ${operator} ${num2} = -`+ operate(operator, num1, num2);
+                            } else {
+                            operator = operator[0];
+                            displayMain.textContent = operate(operator, num1, num2)+"/";
+                            displayContent.textContent = `${num1} ${operator[0]} ${num2} = `+ operate(operator, num1, num2);
+                            }
+                            maxNum1 = undefined;
                         } else {
-                            displayMain.textContent += "/";
+                            if(content.length < 10 && !isNaN(lastChar)){
+                             displayMain.textContent += "/";
+                             } else if(content.length >= 10 && !isNaN(lastChar)){
+                            displayMain.textContent = "/";
+                            } 
                         }
                         break;
                 case "*":
-                        if(!content.includes("*"))
-                        displayMain.textContent += "*";
+                        isDisplay = false;
+                        if(nega.includes("*") && !isNaN(lastChar) || nega.includes("/") && !isNaN(lastChar) || nega.includes("-") && !isNaN(lastChar) || nega.includes("+") && !isNaN(lastChar)){
+                            console.log(num1, num2, operator);
+                            if(operator[0] === "-" && operator[1] === "-"){
+                            displayMain.textContent = "-"+operate("+", num1, num2)+"*";
+                            displayContent.textContent = `-${num1} - ${num2} = ` +operate("+", num1, num2);
+                            } else if(operator[0] === "-" && operator[1] === "+"){
+                            displayMain.textContent = operate(operator, num2, num1)+"*";
+                            displayContent.textContent = `-${num1} + ${num2} = ` +operate(operator, num2, num1);   
+                            } else if(operator[1] !== undefined && operator[1] !== '+'){
+                            operator = operator[1];
+                            displayMain.textContent = "-"+operate(operator, num1, num2)+"*";
+                            displayContent.textContent = `-${num1} ${operator} ${num2} = -`+ operate(operator, num1, num2);
+                            } else {
+                            operator = operator[0];
+                            displayMain.textContent = operate(operator, num1, num2)+"*";
+                            displayContent.textContent = `${num1} ${operator[0]} ${num2} = `+ operate(operator, num1, num2);
+                            }
+                            maxNum1 = undefined;
+                        } else {
+                            if(content.length < 10 && !isNaN(lastChar)){
+                             displayMain.textContent += "*";
+                             } else if(content.length >= 10 && !isNaN(lastChar)){
+                            displayMain.textContent = "*";
+                            } 
+                        } 
                         break;
                 case "-":
-                        displayMain.textContent += "-";
+                        isDisplay = false;
+                        if(nega.includes("*") && !isNaN(lastChar) || nega.includes("/") && !isNaN(lastChar) || nega.includes("-") && !isNaN(lastChar) || nega.includes("+") && !isNaN(lastChar)){
+                            console.log(num1, num2, operator);
+                            if(operator[0] === "-" && operator[1] === "-"){
+                            displayMain.textContent = "-"+operate("+", num1, num2)+"-";
+                            displayContent.textContent = `-${num1} - ${num2} = ` +operate("+", num1, num2);
+                            } else if(operator[0] === "-" && operator[1] === "+"){
+                            displayMain.textContent = operate(operator, num2, num1)+"-";
+                            displayContent.textContent = `-${num1} + ${num2} = ` +operate(operator, num2, num1);   
+                            } else if(operator[1] !== undefined && operator[1] !== '+'){
+                            operator = operator[1];
+                            displayMain.textContent = "-"+operate(operator, num1, num2)+"-";
+                            displayContent.textContent = `-${num1} ${operator} ${num2} = -`+ operate(operator, num1, num2);
+                            } else {
+                            operator = operator[0];
+                            displayMain.textContent = operate(operator, num1, num2)+"-";
+                            displayContent.textContent = `${num1} ${operator[0]} ${num2} = `+ operate(operator, num1, num2);
+                            }
+                            maxNum1 = undefined;
+                        } else {
+                            if(content.length < 10 && !isNaN(lastChar)){
+                             displayMain.textContent += "-";
+                             } else if(content.length >= 10 && !isNaN(lastChar)){
+                            displayMain.textContent = "-";
+                            } 
+                        } 
                         break;
                 case "+":
-                        displayMain.textContent += "+";
+                        isDisplay = false;
+                        if(nega.includes("*") && !isNaN(lastChar) || nega.includes("/") && !isNaN(lastChar) || nega.includes("-") && !isNaN(lastChar) || nega.includes("+") && !isNaN(lastChar)){
+                            console.log(num1, num2, operator);
+                            if(operator[0] === "-" && operator[1] === "-"){
+                            displayMain.textContent = "-"+operate("+", num1, num2)+"+";
+                            displayContent.textContent = `-${num1} - ${num2} = ` +operate("+", num1, num2);
+                            } else if(operator[0] === "-" && operator[1] === "+"){
+                            displayMain.textContent = operate(operator, num2, num1)+"+";
+                            displayContent.textContent = `-${num1} + ${num2} = ` +operate(operator, num2, num1);   
+                            } else if(operator[1] !== undefined && operator[1] !== '+'){
+                            operator = operator[1];
+                            displayMain.textContent = "-"+operate(operator, num1, num2)+"+";
+                            displayContent.textContent = `-${num1} ${operator} ${num2} = -`+ operate(operator, num1, num2);
+                            } else {
+                            operator = operator[0];
+                            displayMain.textContent = operate(operator, num1, num2)+"+";
+                            displayContent.textContent = `${num1} ${operator[0]} ${num2} = `+ operate(operator, num1, num2);
+                            }
+                            maxNum1 = undefined;
+                        } else {
+                            if(content.length < 10 && !isNaN(lastChar)){
+                             displayMain.textContent += "+";
+                             } else if(content.length >= 10 && !isNaN(lastChar)){
+                            displayMain.textContent = "+";
+                            } 
+                        } 
                         break;
                 case "=":
-                        if(operator[0] === "-" && operator[1] === "-"){
+                        if(!isNaN(lastChar)){
+                            if(operator[0] === "-" && operator[1] === "-"){
                             displayMain.textContent = "-"+operate("+", num1, num2);
                             displayContent.textContent = `-${num1} - ${num2} = ` +operate("+", num1, num2);
                         } else if(operator[0] === "-" && operator[1] === "+"){
@@ -113,11 +248,24 @@ const childButtons = buttons.children;
                             displayMain.textContent = operate(operator, num1, num2);
                             displayContent.textContent = `${num1} ${operator[0]} ${num2} = `+ operate(operator, num1, num2);
                         }
+                        }
                         maxNum1 = undefined;
+                        isDisplay = true;
+                        break;
+                case ".":
+                        if(!content.includes(".")){
+                            displayMain.textContent += e.target.textContent;
+                        }
                         break;
                 default:
-                        if(content.length < 12) {
+                        if(isDisplay){
+                            displayMain.textContent = "";
+                            isDisplay = false;
+                        }
+                        if(content.length < 12 && content != 0) {
                             displayMain.textContent += e.target.textContent;
+                        } else if(content == 0){
+                            displayMain.textContent = e.target.textContent;
                         }
                         break;
             }

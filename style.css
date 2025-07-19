@@ -44,6 +44,7 @@ h1 {
 p {
     text-align: right;
     margin-right: 20px;
+    margin-top: 0;
 }
 
 #displayMain {
@@ -51,4 +52,18 @@ p {
     font-size: 40px;
     font-weight: bolder;
     margin-top: 0;
+}
+
+#del,
+#divisionSign,
+#multiplicationSign,
+#subtractionSign,
+#equalsSign,
+#additionSign {
+    background-color: rgb(69, 104, 69);
+}
+
+#clr {
+    background-color: rgb(69, 104, 69);
+    color: orangered;
 }
