@@ -59,11 +59,7 @@ p {
 #multiplicationSign,
 #subtractionSign,
 #equalsSign,
-#additionSign {
-    background-color: rgb(69, 104, 69);
-}
-
+#additionSign,
 #clr {
     background-color: rgb(69, 104, 69);
-    color: orangered;
 }
