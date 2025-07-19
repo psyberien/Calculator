@@ -131,7 +131,7 @@ const childButtons = buttons.children;
                         displayContent.textContent = "";                   
                         break;
                 case "DEL":
-                        if(content <= 0){
+                        if(content.length <= 1){
                             displayMain.textContent = 0;
                         } else {
                             displayMain.textContent = (content = content.substring(0, content.length-1));
@@ -318,7 +318,7 @@ const childButtons = buttons.children;
                         displayContent.textContent = "";                   
                         break;
                 case "Backspace":
-                        if(content <= 0){
+                        if(content.length <= 1){
                             displayMain.textContent = 0;
                         } else {
                             displayMain.textContent = (content = content.substring(0, content.length-1));
