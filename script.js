@@ -264,7 +264,9 @@ const childButtons = buttons.children;
                         }
                         }
                         maxNum1 = undefined;
-                        isDisplay = true;
+                        if(!isNaN(lastChar)){
+                            isDisplay = true;
+                        }
                         break;
                 case ".":
                         if(!content.includes(".")){
@@ -451,7 +453,10 @@ const childButtons = buttons.children;
                         }
                         }
                         maxNum1 = undefined;
-                        isDisplay = true;
+                        if(!isNaN(lastChar)){
+                            isDisplay = true;
+                        }
+                        
                         break;
                 case ".":
                         if(!content.includes(".")){
